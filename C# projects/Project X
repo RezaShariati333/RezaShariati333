@@ -1,3 +1,192 @@
-Cr7 
-L messi
-Ccc
+یک Abstract Class (کلاس انتزاعی) در زبان‌های شیءگرا مانند C#، کلاسی است که نمی‌توان از آن مستقیماً نمونه‌سازی (Instance) کرد و به‌عنوان یک الگو یا قالب برای کلاس‌های فرزند استفاده می‌شود. هدف اصلی آن فراهم کردن متدها و خواص مشترک برای کلاس‌های مشتق شده است، به‌طوری‌که برخی از متدها ممکن است تنها تعریف شوند (انتزاعی) و کلاس‌های فرزند موظف به پیاده‌سازی آن‌ها باشند.
+مثال در C#:
+
+using System;
+
+abstract class Animal
+{
+    // متد انتزاعی (بدون پیاده‌سازی)
+    public abstract void MakeSound();
+
+    // متد عادی (با پیاده‌سازی)
+    public void Eat()
+    {
+        Console.WriteLine("This animal is eating.");
+    }
+}
+
+class Dog : Animal
+{
+    // پیاده‌سازی متد انتزاعی
+    public override void MakeSound()
+    {
+        Console.WriteLine("Woof! Woof!");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        // نمی‌توان از کلاس انتزاعی نمونه‌سازی کرد
+        // Animal animal = new Animal();  // خطا می‌دهد
+
+        Dog dog = new Dog();
+        dog.MakeSound(); // Woof! Woof!
+        dog.Eat();       // This animal is eating
+    }
+}
+______________________________________
+در C#، یک Sealed Class (کلاس مهروموم‌شده) کلاسی است که نمی‌توان از آن ارث‌بری کرد. این نوع کلاس زمانی استفاده می‌شود که بخواهید کلاسی نهایی باشد و هیچ کلاس دیگری نتواند آن را توسعه دهد. برای تعریف یک کلاس مهروموم‌شده، از کلیدواژه sealed استفاده می‌شود.
+کاربرد:
+
+برای جلوگیری از گسترش و تغییر رفتار یک کلاس در کلاس‌های فرزند.
+
+برای ارائه پیاده‌سازی نهایی و محافظت از منطق داخلی کلاس.
+
+مثال از Sealed Class:
+
+using System;
+
+sealed class Calculator
+{
+    public int Add(int a, int b)
+    {
+        return a + b;
+    }
+
+    public int Multiply(int a, int b)
+    {
+        return a * b;
+    }
+}
+
+// این خطا می‌دهد، زیرا Calculator مهروموم شده است
+// class AdvancedCalculator : Calculator {}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Calculator calc = new Calculator();
+        Console.WriteLine(calc.Add(5, 3));      // خروجی: 8
+        Console.WriteLine(calc.Multiply(5, 3)); // خروجی: 15
+    }
+}
+_________________________________
+در Partial Class #C کلاس ( جزئی به شما اجازه میدهد یک کلاس را در چندین فایل جداگانه تعریف و پیاده سازی کنید این ویژگی برای پروژههای بزرگ و زمانی که نیاز به همکاری بین چندین توسعه دهنده وجود دارد بسیار مفید است همه این فایلها در زمان کامپایل با هم ترکیب شده و به یک کلاس نهایی تبدیل میشوند
+
+مثال از Partial :
+using System;
+
+namespace PartialClassExample
+{
+    public partial class Person
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+
+        public void DisplayFullName()
+        {
+            Console.WriteLine($"{FirstName} {LastName}");
+        }
+    }
+}
+____________________________
+یکی از چندریختی ) Polymorphism ( OOP ) اصول اساسی برنامه نویسی شی گرا است که به شما اجازه میدهد تا از طریق یک واسط واحد با انواع مختلفی از اشیاء تعامل داشته باشید این مفهوم به متدها یا اشیاء اجازه میدهد که رفتارهای مختلفی را بسته به نوع شیء اجرا کنند 
+
+using System;
+
+class Animal
+{
+    public virtual void Speak()
+    {
+        Console.WriteLine("The animal makes a sound.");
+    }
+}
+
+class Dog : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("The dog barks.");
+    }
+}
+
+class Cat : Animal
+{
+    public override void Speak()
+    {
+        Console.WriteLine("The cat meows.");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Animal myAnimal = new Animal();
+        Animal myDog = new Dog();
+        Animal myCat = new Cat();
+
+        myAnimal.Speak(); // خروجی: The animal makes a sound.
+        myDog.Speak();    // خروجی: The dog barks.
+        myCat.Speak();    // خروجی: The cat meows.
+    }
+}
+_______________________________
+یکی از ویژگیهای بازنویسی ) Overriding کلیدی در برنامه نویسی شی گرا است که به شما امکان میدهد تا یک متد از کلاس پایه را در کلاس مشتق شده Base Class تغییر دهید و پیاده سازی ( Derived Class ) جدیدی برای آن ارائه دهید . این قابلیت برای پیاده سازی چندریختی زمان اجرا ( Run - Time Polymorphism ) C # استفاده میشود
+
+using System;
+
+class Animal
+{
+    // متد پایه قابل بازنویسی
+    public virtual void Speak()
+    {
+        Console.WriteLine("The animal makes a sound.");
+    }
+}
+
+class Dog : Animal
+{
+    // بازنویسی متد Speak
+    public override void Speak()
+    {
+        Console.WriteLine("The dog barks.");
+    }
+}
+
+class Cat : Animal
+{
+    // بازنویسی متد Speak
+    public override void Speak()
+    {
+        Console.WriteLine("The cat meows.");
+    }
+}
+
+class Program
+{
+    static void Main(string[] args)
+    {
+        Animal animal1 = new Animal();
+        Animal animal2 = new Dog();
+        Animal animal3 = new Cat();
+
+        // فراخوانی متدها
+        animal1.Speak(); // خروجی: The animal makes a sound.
+        animal2.Speak(); // خروجی: The dog barks.
+        animal3.Speak(); // خروجی: The cat meows.
+    }
+}
+_______________________________
+آرایه ( Array ) در برنامه نویسی یک ساختار داده ای است که برای ذخیره مجموعه ای از داده ها از یک نوع خاص مثل اعداد . رشته ها یا ( اشیاء در یک مکان حافظه استفاده صحيح میشود . هر عنصر در آرایه با استفاده از یک اندیس ( index ) قابل دسترسی است . آرایه ها در زبانهای مختلف برنامه نویسی از جمله کاربرد گسترده ای دارند
+// تعریف یک آرایه از اعداد صحیح با مقداردهی اولیه
+int[] numbers = { 1, 2, 3, 4, 5 };
+
+// تعریف آرایه بدون مقداردهی اولیه
+string[] names = new string[3]; // آرایه‌ای با 3 خانه
+names[0] = "Ali";  // مقداردهی عنصر اول
+names[1] = "Reza"; // مقداردهی عنصر دوم
+names[2] = "Sara"; // مقداردهی عنصر سوم
